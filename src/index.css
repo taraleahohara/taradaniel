@@ -45,6 +45,13 @@ All colors MUST be HSL.
     --wedding-cream: 37 82% 89%;
     --wedding-warm-text: 39 80% 26%;
   }
+
+  /* Honeymoon page color overrides */
+  body.honeymoon-page {
+    --wedding-cream: 37 79% 89%;
+    --wedding-rust: 14 57% 51%;
+    --wedding-olive: 14 57% 51%;
+  }
 }
 
 @layer base {

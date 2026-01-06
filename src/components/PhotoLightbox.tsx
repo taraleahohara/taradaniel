@@ -5,6 +5,7 @@ interface Photo {
   id: string;
   url: string;
   alt: string;
+  caption?: string | null;
 }
 
 interface PhotoLightboxProps {
@@ -26,11 +27,13 @@ const PhotoLightbox = ({ photos, currentIndex, onClose, onNavigate }: PhotoLight
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [currentIndex, photos.length, onClose, onNavigate]);
 
+  const currentPhoto = photos[currentIndex];
+
   return (
-    <div className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 bg-black/95 flex flex-col items-center justify-center">
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 p-2 text-white hover:bg-white/10 rounded-full transition-colors"
+        className="absolute top-4 right-4 p-2 text-white hover:bg-white/10 rounded-full transition-colors z-10"
         aria-label="Close lightbox"
       >
         <X size={32} />
@@ -39,23 +42,30 @@ const PhotoLightbox = ({ photos, currentIndex, onClose, onNavigate }: PhotoLight
       {currentIndex > 0 && (
         <button
           onClick={() => onNavigate(currentIndex - 1)}
-          className="absolute left-4 p-2 text-white hover:bg-white/10 rounded-full transition-colors"
+          className="absolute left-4 p-2 text-white hover:bg-white/10 rounded-full transition-colors z-10"
           aria-label="Previous photo"
         >
           <ChevronLeft size={32} />
         </button>
       )}
 
-      <img
-        src={photos[currentIndex].url}
-        alt={photos[currentIndex].alt}
-        className="max-h-[90vh] max-w-[90vw] object-contain"
-      />
+      <div className="flex flex-col items-center justify-center max-h-[90vh] max-w-[90vw]">
+        <img
+          src={currentPhoto.url}
+          alt={currentPhoto.alt}
+          className="max-h-[85vh] max-w-[90vw] object-contain"
+        />
+        {currentPhoto.caption && (
+          <div className="mt-4 px-4 text-white text-center max-w-2xl">
+            <p className="text-sm md:text-base">{currentPhoto.caption}</p>
+          </div>
+        )}
+      </div>
 
       {currentIndex < photos.length - 1 && (
         <button
           onClick={() => onNavigate(currentIndex + 1)}
-          className="absolute right-4 p-2 text-white hover:bg-white/10 rounded-full transition-colors"
+          className="absolute right-4 p-2 text-white hover:bg-white/10 rounded-full transition-colors z-10"
           aria-label="Next photo"
         >
           <ChevronRight size={32} />

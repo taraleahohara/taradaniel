@@ -138,7 +138,8 @@ Thank you so much for celebrating our intimate brunch wedding with us. Our goal 
   {
     names: ["Ajanthi and Sendur"],
     tag: "ajanthi-sendur",
-    welcomeMessage: "Dear Ajanthi and Sendur,\nLoremIpsum"
+    welcomeMessage: `Dear Ajanthi and Sendur,
+Thank you so much for celebrating our intimate brunch wedding with us. Our goal was to fill the day with our closest circle, and it wouldn't have been the same without you. Your generous gift means the world to us and went towards spoiling ourselves during our honeymoon. We feel so lucky to have had you there throughout the day from vows to brunch to afterparty. We love you!`
   },
   {
     names: ["Kat"],
@@ -149,7 +150,8 @@ Your gorgeous smile lit up the day and we were so thankful for your presence on 
   {
     names: ["Terry"],
     tag: "terry",
-    welcomeMessage: "Dear Terry and Wayne,\nLoremIpsum"
+    welcomeMessage: `Dear Terry and Wayne,
+Thank you so much for celebrating our intimate brunch wedding with us. Our goal was to fill the day with our closest circle, and it wouldn't have been the same without you. Your generous gift means the world to us and went towards spoiling ourselves during our honeymoon. We feel so lucky to have had you there throughout the day from vows to brunch to afterparty. We love you!`
   },
   {
     names: ["Dorothy"],

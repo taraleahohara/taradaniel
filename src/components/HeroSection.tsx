@@ -1,22 +1,30 @@
 import heroImage from "@/assets/headerimage.jpg";
 import FloralDecoration from "./FloralDecoration";
 
-const HeroSection = () => {
+interface HeroSectionProps {
+  imageUrl?: string;
+  title?: string;
+  subtitle?: string;
+}
+
+const HeroSection = ({ imageUrl, title = "Tara & Daniel", subtitle = "October 4th, 2025" }: HeroSectionProps) => {
+  const imageSrc = imageUrl || heroImage;
+  
   return (
     <section className="relative h-screen overflow-hidden">
       <FloralDecoration position="top-right" />
       <img 
-        src={heroImage} 
-        alt="Tara and Daniel's Wedding" 
+        src={imageSrc} 
+        alt={title}
         className="absolute inset-0 w-full h-full object-cover"
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50" />
       <div className="absolute bottom-0 left-0 z-10 text-left px-6 pb-6 md:pb-8">
         <h1 className="text-7xl md:text-9xl mb-6 text-wedding-cream">
-          Tara & Daniel
+          {title}
         </h1>
         <p className="text-2xl md:text-3xl font-serif text-wedding-cream">
-          October 4th, 2025
+          {subtitle}
         </p>
       </div>
     </section>

@@ -13,13 +13,13 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET || '' // Use environment variable for security
 });
 
-async function generateGallery() {
+async function generateGallery(folderName = 'Wedding') {
   try {
-    console.log('Fetching images from Cloudinary...');
+    console.log(`Fetching images from Cloudinary folder: ${folderName}...`);
     
-    // Search for images in the Wedding folder
+    // Search for images in the specified folder
     const result = await cloudinary.search
-      .expression('folder:Wedding')
+      .expression(`folder:${folderName}`)
       .max_results(500)
       .with_field('tags')
       .with_field('context')
@@ -35,24 +35,39 @@ async function generateGallery() {
     });
 
     // Format the data
-    const photos = sortedResources.map((resource, index) => ({
-      id: `photo-${index + 1}`,
-      url: resource.secure_url,
-      width: resource.width,
-      height: resource.height,
-      tags: resource.tags || []
-    }));
+    const photos = sortedResources.map((resource, index) => {
+      // Extract caption from context metadata
+      // Cloudinary stores captions in context.caption or context.description
+      let caption = null;
+      if (resource.context) {
+        caption = resource.context.caption || resource.context.description || null;
+      }
+      
+      return {
+        id: `photo-${index + 1}`,
+        url: resource.secure_url,
+        width: resource.width,
+        height: resource.height,
+        tags: resource.tags || [],
+        caption: caption
+      };
+    });
+
+    // Determine output file and export name based on folder
+    const isHoneymoon = folderName.toLowerCase() === 'honeymoon';
+    const exportName = isHoneymoon ? 'honeymoonPhotos' : 'weddingPhotos';
+    const outputFile = isHoneymoon ? 'honeymoonPhotos.ts' : 'weddingPhotos.ts';
 
     // Generate TypeScript content
     const tsContent = `// Auto-generated file - Do not edit manually
-// Generated from Cloudinary folder: Wedding
-// Run: node scripts/generateGallery.js
+// Generated from Cloudinary folder: ${folderName}
+// Run: node scripts/generateGallery.js${isHoneymoon ? ' honeymoon' : ''}
 
-export const weddingPhotos = ${JSON.stringify(photos, null, 2)};
+export const ${exportName} = ${JSON.stringify(photos, null, 2)};
 `;
 
     // Write to file
-    const outputPath = path.join(__dirname, '../src/data/weddingPhotos.ts');
+    const outputPath = path.join(__dirname, '../src/data', outputFile);
     fs.writeFileSync(outputPath, tsContent, 'utf8');
     
     console.log(`✅ Successfully generated ${photos.length} photos to ${outputPath}`);
@@ -62,5 +77,7 @@ export const weddingPhotos = ${JSON.stringify(photos, null, 2)};
   }
 }
 
-generateGallery();
+// Get folder name from command line argument, default to 'Wedding'
+const folderName = process.argv[2] || 'Wedding';
+generateGallery(folderName);
 

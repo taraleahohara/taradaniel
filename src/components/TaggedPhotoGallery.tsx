@@ -1,7 +1,8 @@
 import { useState, useMemo, useEffect } from "react";
 import { Download, Eye } from "lucide-react";
 import PhotoLightbox from "./PhotoLightbox";
-import { weddingPhotos as allCloudinaryPhotos } from "@/data/weddingPhotos";
+import { weddingPhotos } from "@/data/weddingPhotos";
+import { honeymoonPhotos } from "@/data/honeymoonPhotos";
 
 interface Photo {
   id: string;
@@ -10,6 +11,7 @@ interface Photo {
   alt: string;
   width?: number;
   height?: number;
+  caption?: string | null;
 }
 
 // URL transformation functions removed - using original Cloudinary URLs directly
@@ -21,6 +23,10 @@ interface TaggedPhotoGalleryProps {
   categoryIndex: number;
   altPrefix?: string; // Optional prefix for alt text (defaults to title)
   id?: string; // Optional ID for section navigation
+  description?: string | React.ReactNode; // Optional description text to display after gallery title
+  allowDownload?: boolean; // Whether to show download button (default: true)
+  showCaption?: boolean; // Whether to show captions (default: false)
+  photosSource?: 'wedding' | 'honeymoon'; // Which photo source to use (default: 'wedding')
 }
 
 // Utility to construct a Cloudinary download URL with fl_attachment flag
@@ -108,11 +114,18 @@ const TaggedPhotoGallery = ({
   tag, 
   categoryIndex,
   altPrefix,
-  id 
+  id,
+  description,
+  allowDownload = true,
+  showCaption = false,
+  photosSource = 'wedding'
 }: TaggedPhotoGalleryProps) => {
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(null);
   const [hoveredPhoto, setHoveredPhoto] = useState<string | null>(null);
   const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
+
+  // Get the appropriate photo source
+  const allCloudinaryPhotos = photosSource === 'honeymoon' ? honeymoonPhotos : weddingPhotos;
 
   // Filter and map photos from Cloudinary based on the tag
   const photos = useMemo(() => {
@@ -141,7 +154,8 @@ const TaggedPhotoGallery = ({
             url: photo.url,
             tags: photo.tags,
             width: photo.width,
-            height: photo.height
+            height: photo.height,
+            caption: (photo as any).caption
           });
         }
         
@@ -154,7 +168,8 @@ const TaggedPhotoGallery = ({
             ? `${altPrefix} ${index + 1}` 
             : `${title} ${index + 1}`,
           width: photo.width,
-          height: photo.height
+          height: photo.height,
+          caption: (photo as any).caption || null
         };
       })
       // Filter out photos with invalid URLs to prevent holes in the grid
@@ -170,7 +185,7 @@ const TaggedPhotoGallery = ({
     });
 
     return filtered;
-  }, [tag, title, altPrefix]);
+  }, [tag, title, altPrefix, photosSource, allCloudinaryPhotos]);
 
   // Filter out failed images from the display
   const validPhotos = photos.filter(photo => !failedImages.has(photo.id));
@@ -217,9 +232,16 @@ const TaggedPhotoGallery = ({
     <>
       <section id={id} className="py-16 px-6 scroll-mt-20">
         <div className="max-w-7xl mx-auto">
-          <h3 className="text-4xl md:text-5xl text-center mb-12 text-wedding-olive">
+          <h3 className="text-4xl md:text-5xl text-center mb-8 text-wedding-olive">
             {title}
           </h3>
+          {description && (
+            <div className="max-w-3xl mx-auto mb-12">
+              <p className="text-lg md:text-xl leading-relaxed text-wedding-warm-text text-center">
+                {description}
+              </p>
+            </div>
+          )}
           {/* Masonry layout: flex container with columns */}
           <div className="flex gap-4">
             {photoColumns.map((column, columnIndex) => (
@@ -280,15 +302,22 @@ const TaggedPhotoGallery = ({
                             <Eye size={18} className="sm:w-5 sm:h-5" />
                             <span className="hidden sm:inline">View</span>
                           </button>
-                          <a
-                            href={getDownloadUrl(photo.downloadUrl)}
-                            download
-                            className="flex items-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 bg-wedding-olive text-white rounded-lg hover:bg-wedding-olive/90 transition-colors text-sm sm:text-base"
-                            aria-label={`Download ${photo.alt}`}
-                          >
-                            <Download size={18} className="sm:w-5 sm:h-5" />
-                            <span className="hidden sm:inline">Download</span>
-                          </a>
+                          {allowDownload && (
+                            <a
+                              href={getDownloadUrl(photo.downloadUrl)}
+                              download
+                              className="flex items-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 bg-wedding-olive text-white rounded-lg hover:bg-wedding-olive/90 transition-colors text-sm sm:text-base"
+                              aria-label={`Download ${photo.alt}`}
+                            >
+                              <Download size={18} className="sm:w-5 sm:h-5" />
+                              <span className="hidden sm:inline">Download</span>
+                            </a>
+                          )}
+                        </div>
+                      )}
+                      {showCaption && photo.caption && (
+                        <div className="mt-2 text-sm text-wedding-warm-text text-center">
+                          {photo.caption}
                         </div>
                       )}
                     </div>
