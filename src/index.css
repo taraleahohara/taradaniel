@@ -88,29 +88,30 @@ All colors MUST be HSL.
     --brand-alt: 50 36% 29%;
   }
 
-  /* Honeymoon chapter theme — terracotta, fully self-contained. */
+  /* Honeymoon chapter theme — the neutral archive shell with terracotta as
+     its spine colour ("neutral page, one coloured spine per chapter"). */
   [data-chapter="honeymoon"] {
-    --background: 37 82% 89%;
-    --foreground: 39 80% 26%;
-    --card: 37 82% 89%;
-    --card-foreground: 39 80% 26%;
-    --popover: 37 82% 89%;
-    --popover-foreground: 39 80% 26%;
-    --primary: 17 70% 42%;
-    --primary-foreground: 37 82% 89%;
-    --secondary: 50 36% 29%;
-    --secondary-foreground: 37 82% 89%;
-    --muted: 37 50% 85%;
-    --muted-foreground: 39 80% 26%;
-    --accent: 37 60% 80%;
-    --accent-foreground: 39 80% 26%;
-    --border: 37 50% 85%;
-    --input: 37 50% 85%;
-    --ring: 17 70% 42%;
-    --paper: 37 79% 89%;
-    --ink: 39 80% 26%;
+    --background: 39 48% 94%;
+    --foreground: 24 22% 16%;
+    --card: 39 48% 94%;
+    --card-foreground: 24 22% 16%;
+    --popover: 39 48% 94%;
+    --popover-foreground: 24 22% 16%;
+    --primary: 14 57% 51%;
+    --primary-foreground: 39 48% 94%;
+    --secondary: 14 34% 42%;
+    --secondary-foreground: 39 48% 94%;
+    --muted: 38 40% 90%;
+    --muted-foreground: 26 20% 40%;
+    --accent: 36 42% 87%;
+    --accent-foreground: 24 22% 16%;
+    --border: 34 30% 85%;
+    --input: 34 30% 85%;
+    --ring: 14 57% 51%;
+    --paper: 39 48% 94%;
+    --ink: 24 22% 16%;
     --brand: 14 57% 51%;
-    --brand-alt: 14 57% 51%;
+    --brand-alt: 14 45% 45%;
   }
 }
 
@@ -129,20 +130,14 @@ All colors MUST be HSL.
     font-weight: 400;
   }
 
-  /* Chapter pages keep Allura for now; the shell moves to Fraunces.
-     Stage B will migrate the chapter interiors deliberately. */
+  /* Allura is the wedding chapter's signature only. Everywhere else —
+     the shell and the honeymoon chapter — uses the Fraunces display face. */
   [data-chapter="wedding"] h1,
   [data-chapter="wedding"] h2,
   [data-chapter="wedding"] h3,
   [data-chapter="wedding"] h4,
   [data-chapter="wedding"] h5,
-  [data-chapter="wedding"] h6,
-  [data-chapter="honeymoon"] h1,
-  [data-chapter="honeymoon"] h2,
-  [data-chapter="honeymoon"] h3,
-  [data-chapter="honeymoon"] h4,
-  [data-chapter="honeymoon"] h5,
-  [data-chapter="honeymoon"] h6 {
+  [data-chapter="wedding"] h6 {
     font-family: 'Allura', cursive;
   }
 }
