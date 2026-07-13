@@ -119,7 +119,7 @@ const Honeymoon = () => {
 
   // Render authenticated view
   return (
-    <div data-chapter={chapter.theme} className="min-h-screen">
+    <div data-chapter={chapter.theme} className="min-h-screen bg-paper">
       <HeroSection
         imageUrl={chapter.hero!.image}
         title={chapter.hero!.title}
