@@ -143,23 +143,9 @@ const TaggedPhotoGallery = ({
         
         // Validate URL format
         if (!imageUrl || !imageUrl.startsWith('http')) {
-          console.error('Invalid photo URL:', photo);
           imageUrl = ''; // Will trigger error handling
         }
-        
-        // Debug: Log URLs for first few photos
-        if (index < 3) {
-          console.log(`Photo ${index + 1} URL:`, imageUrl);
-          console.log(`Photo ${index + 1} data:`, {
-            id: photo.id,
-            url: photo.url,
-            tags: photo.tags,
-            width: photo.width,
-            height: photo.height,
-            caption: (photo as any).caption
-          });
-        }
-        
+
         return {
           id: `${tag}-${index + 1}`,
           url: imageUrl, // Original Cloudinary URL
@@ -170,23 +156,14 @@ const TaggedPhotoGallery = ({
             : `${title} ${index + 1}`,
           width: photo.width,
           height: photo.height,
-          caption: (photo as any).caption || null
+          caption: ('caption' in photo && photo.caption) || null
         };
       })
       // Filter out photos with invalid URLs to prevent holes in the grid
       .filter(photo => photo.url && photo.url.trim() !== '');
 
-    // Debug logging - v4 with regenerated URLs
-    console.log(`🎯 TaggedPhotoGallery v4 "${title}" (tag: "${tag}"):`, {
-      totalCloudinaryPhotos: allCloudinaryPhotos?.length || 0,
-      filteredCount: filtered.length,
-      samplePhoto: filtered[0],
-      firstPhotoUrl: filtered[0]?.url,
-      timestamp: new Date().toISOString()
-    });
-
     return filtered;
-  }, [tag, title, altPrefix, photosSource, allCloudinaryPhotos]);
+  }, [tag, title, altPrefix, allCloudinaryPhotos]);
 
   // Filter out failed images from the display
   const validPhotos = photos.filter(photo => !failedImages.has(photo.id));
@@ -274,24 +251,12 @@ const TaggedPhotoGallery = ({
                           height={photo.height}
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           onError={(e) => {
-                            console.error('❌ Image failed to load:', {
-                              url: photo.url,
-                              alt: photo.alt,
-                              id: photo.id,
-                              error: e
-                            });
                             // Try to reload with download URL first
                             if (e.currentTarget.src !== photo.downloadUrl) {
-                              console.log('Retrying with download URL:', photo.downloadUrl);
                               e.currentTarget.src = photo.downloadUrl;
                             } else {
                               // If download URL also fails, remove from grid
                               setFailedImages(prev => new Set(prev).add(photo.id));
-                            }
-                          }}
-                          onLoad={() => {
-                            if (photoIndex < 3) {
-                              console.log('✅ Image loaded successfully:', photo.url);
                             }
                           }}
                         />

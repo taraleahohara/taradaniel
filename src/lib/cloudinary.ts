@@ -1,4 +1,5 @@
 import { Cloudinary } from '@cloudinary/url-gen';
+import { ResizeAdvancedAction } from '@cloudinary/url-gen/actions/resize/ResizeAdvancedAction';
 
 // Initialize Cloudinary instance
 // Make sure to set these environment variables in your .env file
@@ -29,12 +30,14 @@ export function getCloudinaryUrl(
 
   if (transformations) {
     if (transformations.width || transformations.height) {
-      image = image.resize({
-        width: transformations.width,
-        height: transformations.height,
-        crop: (transformations.crop as any) || 'limit',
-        gravity: (transformations.gravity as any) || 'auto',
-      });
+      // The ResizeSimpleAction constructor only applies truthy dimensions,
+      // so passing 0 for a missing width/height omits that qualifier.
+      const resizeAction = new ResizeAdvancedAction(
+        transformations.crop || 'limit',
+        transformations.width ?? 0,
+        transformations.height ?? 0,
+      ).gravity(transformations.gravity || 'auto');
+      image = image.resize(resizeAction);
     }
 
     if (transformations.quality) {
@@ -42,7 +45,7 @@ export function getCloudinaryUrl(
     }
 
     if (transformations.format) {
-      image = image.format(transformations.format as any);
+      image = image.format(transformations.format);
     }
   }
 

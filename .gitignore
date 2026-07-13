@@ -28,3 +28,6 @@ logs/
 supabase/.branches
 supabase/.temp
 
+
+# Cursor debug artifacts
+.cursor/

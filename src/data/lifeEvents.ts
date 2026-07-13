@@ -32,12 +32,12 @@ export const lifeEvents: LifeEvent[] = [
     description: "The best day of our lives.",
     imageUrl: "https://res.cloudinary.com/dbr3xp0bx/image/upload/v1767394827/AP1-6.jpg",
     link: "/wedding",
-    date: "2025-04-10"
+    date: "2025-10-04"
   },
   {
     id: "honeymoon",
     title: "honeymoon",
-    description: "Our trip to Italy.",
+    description: "Our honeymoon in Sri Lanka.",
     imageUrl: "https://res.cloudinary.com/dbr3xp0bx/image/upload/v1767633166/IMG_3449_azh1fc.jpg",
     link: "/honeymoon",
     date: "2025-08-12"

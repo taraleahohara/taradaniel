@@ -3,12 +3,10 @@ import { useSearchParams } from "react-router-dom";
 import HeroSection from "@/components/HeroSection";
 import SiteDescription from "@/components/SiteDescription";
 import TaggedPhotoGallery from "@/components/TaggedPhotoGallery";
-import AlbumLink from "@/components/AlbumLink";
 import ThankYouSection from "@/components/ThankYouSection";
 import FloatingGalleryNav from "@/components/FloatingGalleryNav";
 import RelatedGalleries from "@/components/RelatedGalleries";
 import { guestList, type GuestConfig } from "@/data/guests";
-import { fullAlbumUrl } from "@/data/photoData";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,64 +20,31 @@ const Wedding = () => {
   const [currentGuest, setCurrentGuest] = useState<GuestConfig | null>(null);
   const [error, setError] = useState("");
   const [searchParams] = useSearchParams();
-  
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/5e69c25a-120a-44ef-8831-fc1edb8937ac',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Wedding.tsx:24',message:'Component render',data:{searchParamsString:searchParams.toString(),isAuthenticated,currentGuestTag:currentGuest?.tag,windowLocation:window.location.href},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-  // #endregion
-
-  // Version marker - v5 - NEW PORT 4000
-  console.log('🚀🚀🚀 Wedding page v5 - NEW PORT 4000 - Fresh start!');
-  console.log('Regenerated URLs should be working now!');
-  console.log('Timestamp:', new Date().toISOString());
 
   // Magic Links - Check for guest parameter in URL on mount
   useEffect(() => {
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/5e69c25a-120a-44ef-8831-fc1edb8937ac',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Wedding.tsx:32',message:'useEffect triggered',data:{searchParamsString:searchParams.toString(),allSearchParams:Object.fromEntries(searchParams.entries()),guestListLength:guestList.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-    // #endregion
-    
     const guestTag = searchParams.get('guest');
-    
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/5e69c25a-120a-44ef-8831-fc1edb8937ac',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Wedding.tsx:37',message:'Query param extracted',data:{guestTag,guestTagType:typeof guestTag,guestTagLength:guestTag?.length,isNull:guestTag===null,isUndefined:guestTag===undefined},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-    // #endregion
-    
+
     if (guestTag) {
-      // #region agent log
-      const weddingHighlightsGuest = guestList.find(guest => guest.tag === "wedding-highlights");
-      const allTags = guestList.map(g => g.tag);
-      fetch('http://127.0.0.1:7242/ingest/5e69c25a-120a-44ef-8831-fc1edb8937ac',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Wedding.tsx:42',message:'Before guest search',data:{guestTag,guestListLength:guestList.length,hasWeddingHighlights:!!weddingHighlightsGuest,weddingHighlightsTag:weddingHighlightsGuest?.tag,allTags},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
-      // #endregion
-      
       // Search for guest by tag
       const foundGuest = guestList.find(guest => guest.tag === guestTag);
-      
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/5e69c25a-120a-44ef-8831-fc1edb8937ac',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Wedding.tsx:47',message:'After guest search',data:{guestTag,foundGuest:!!foundGuest,foundGuestTag:foundGuest?.tag,foundGuestNames:foundGuest?.names,tagComparison:foundGuest ? foundGuest.tag === guestTag : 'N/A',exactMatch:guestTag === "wedding-highlights"},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-      // #endregion
-      
+
       if (foundGuest) {
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/5e69c25a-120a-44ef-8831-fc1edb8937ac',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Wedding.tsx:50',message:'Setting authentication state',data:{foundGuestTag:foundGuest.tag,foundGuestNames:foundGuest.names,currentAuthState:isAuthenticated},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
-        // #endregion
-        
         // Auto-authenticate with magic link
         setCurrentGuest(foundGuest);
         setIsAuthenticated(true);
       }
-    } else {
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/5e69c25a-120a-44ef-8831-fc1edb8937ac',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Wedding.tsx:58',message:'No guest tag found',data:{searchParamsString:searchParams.toString()},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-      // #endregion
     }
   }, [searchParams]);
 
   // Update page title when authenticated
-  if (isAuthenticated && currentGuest) {
-    document.title = `Tara & Daniel's Wedding - ${currentGuest.names[0]}`;
-  } else {
-    document.title = `Tara & Daniel's Wedding`;
-  }
+  useEffect(() => {
+    if (isAuthenticated && currentGuest && currentGuest.tag !== "wedding-highlights") {
+      document.title = `Tara & Daniel's Wedding - ${currentGuest.names[0]}`;
+    } else {
+      document.title = `Tara & Daniel's Wedding`;
+    }
+  }, [isAuthenticated, currentGuest]);
 
   // Update Open Graph image for social sharing
   useEffect(() => {
@@ -165,10 +130,6 @@ const Wedding = () => {
     }
   };
 
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/5e69c25a-120a-44ef-8831-fc1edb8937ac',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Wedding.tsx:141',message:'Render check',data:{isAuthenticated,currentGuest:!!currentGuest,currentGuestTag:currentGuest?.tag},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
-  // #endregion
-  
   // Render login form if not authenticated
   if (!isAuthenticated) {
     return (
@@ -298,16 +259,16 @@ const Wedding = () => {
       />
       
       {currentGuest && currentGuest.tag !== "wedding-highlights" && (
-        <TaggedPhotoGallery 
+        <TaggedPhotoGallery
           title="Moments Curated for You"
+          // TODO: The underlying Cloudinary tag is misspelled ("Calgeron" instead of
+          // "Calegeron"). Fix the tag at the source in Cloudinary, then remove this remap.
           tag={currentGuest.tag === "Calegeron" ? "Calgeron" : currentGuest.tag}
           categoryIndex={4}
           id="curated-for-you"
         />
       )}
-      
-      <AlbumLink albumUrl={fullAlbumUrl} />
-      
+
       {currentGuest && currentGuest.tag !== "wedding-highlights" && (
         <ThankYouSection />
       )}
