@@ -5,12 +5,6 @@ import { getLqipUrl, isCloudinaryUrl, optimizeCloudinaryUrl } from '@/lib/cloudi
 // gallery sources max out at 1600px (c_limit also prevents upscaling).
 const SRCSET_WIDTHS = [640, 750, 828, 1080, 1200, 1600];
 
-// Respect prefers-reduced-motion: skip the animated blur-up transition
-// (the LQIP -> sharp swap itself still happens, just without animation).
-const prefersReducedMotion = () =>
-  typeof window !== 'undefined' &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
 interface CloudinaryImageProps extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'src' | 'srcSet'> {
   src: string;
   alt: string;
@@ -24,9 +18,9 @@ interface CloudinaryImageProps extends Omit<React.ImgHTMLAttributes<HTMLImageEle
 
 /**
  * CloudinaryImage renders an optimized responsive image for Cloudinary URLs
- * (f_auto/q_auto/c_limit srcSet) with an LQIP blur-up: a tiny blurred
- * placeholder is shown as the img background while the full image loads,
- * then the sharp image blurs in over ~300ms.
+ * (f_auto/q_auto/c_limit srcSet) with an LQIP placeholder: a tiny blurred
+ * thumbnail is shown as the img background while the full image loads;
+ * the real photo paints over it, always sharp, as soon as it's decoded.
  *
  * Non-Cloudinary URLs render as a plain <img> with no LQIP.
  */
@@ -96,10 +90,13 @@ const CloudinaryImage: React.FC<CloudinaryImageProps> = ({
   // Generate default src with fallback width
   const defaultSrc = optimizeCloudinaryUrl(src, width);
 
-  // LQIP blur-up: the tiny placeholder is painted as the img element's
-  // background (visible through the transparent content area while the
-  // real image loads). Once loaded, the sharp image transitions from
-  // blurred to sharp. No wrapper element, so layout is unchanged.
+  // LQIP: the tiny placeholder (already blurred server-side via e_blur)
+  // is painted as the img element's background; it shows through the
+  // transparent content area while the real image loads, and the real
+  // image simply paints over it the moment it's decoded. No CSS filter
+  // is ever applied to the element, so the actual photo is never shown
+  // blurred — a slow load reads as "placeholder", not "broken image".
+  // No wrapper element, so layout is unchanged.
   const lqipStyle: React.CSSProperties = {
     ...(loaded
       ? {}
@@ -108,8 +105,6 @@ const CloudinaryImage: React.FC<CloudinaryImageProps> = ({
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }),
-    filter: loaded ? 'none' : 'blur(12px)',
-    ...(prefersReducedMotion() ? {} : { transition: 'filter 300ms ease-out' }),
     ...style,
   };
 
