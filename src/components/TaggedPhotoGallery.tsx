@@ -483,6 +483,7 @@ const TaggedPhotoGallery = ({
           onClose={() => setSelectedPhotoIndex(null)}
           onNavigate={setSelectedPhotoIndex}
           variant={isArchive ? "archive" : "dark"}
+          allowDownload={allowDownload}
         />
       )}
     </>

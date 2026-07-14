@@ -7,16 +7,20 @@ interface PlateHeroProps {
   title: string;
   subtitle: string;
   imageUrl: string;
+  /** Script chapters (the wedding's Allura) keep the title's natural case
+   *  and skip the italic — the chapter's own display face does the talking. */
+  script?: boolean;
 }
 
 /** Homestead chapter hero: big lowercase title on a colour plate first, the
  *  photograph below it (the Kelsey "title, then image" pattern), joined by
  *  a curved edge — the page's one licensed gesture. Locked in the Phase 3.5
  *  pilot (Tara chose wash mode; band kept for chapters that want it). */
-const PlateHero = ({ mode, eyebrow, title, subtitle, imageUrl }: PlateHeroProps) => {
+const PlateHero = ({ mode, eyebrow, title, subtitle, imageUrl, script = false }: PlateHeroProps) => {
   const isBand = mode === "band";
   const plate = isBand ? "bg-brand" : "bg-wash";
   const plateFill = isBand ? "text-brand" : "text-wash";
+  const titleFace = script ? "font-display" : "font-display italic lowercase";
 
   return (
     <section className="bg-paper">
@@ -25,7 +29,7 @@ const PlateHero = ({ mode, eyebrow, title, subtitle, imageUrl }: PlateHeroProps)
           {eyebrow}
         </p>
         <h1
-          className={`font-display italic lowercase text-7xl md:text-9xl leading-none mb-5 ${
+          className={`${titleFace} text-7xl md:text-9xl leading-none mb-5 ${
             isBand ? "text-paper" : "text-brand"
           }`}
         >

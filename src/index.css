@@ -103,6 +103,16 @@ All colors MUST be HSL.
     --ink: 39 80% 26%;
     --brand: 17 70% 42%;
     --brand-alt: 50 36% 29%;
+    /* Homestead ROLES re-declared in wedding colours: the design language
+       applies here too, but every house token resolves to the wedding's own
+       palette — rust plays the voice (copper role), wedding olive plays the
+       structure, and the hero wash is a pale rust-cream. */
+    --parchment: 38 80% 93%;
+    --olive: 50 36% 29%;
+    --copper: 17 70% 42%;
+    --copper-bright: 20 65% 48%;
+    --wash: 27 70% 86%;
+    --ornament: hsl(17 70% 42% / 0.8);
   }
 
   /* Honeymoon chapter theme — the neutral archive shell with terracotta as

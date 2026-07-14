@@ -1,12 +1,15 @@
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, Download } from "lucide-react";
 import { useEffect } from "react";
 import CloudinaryImage from "./CloudinaryImage";
+import { getDownloadUrl } from "@/lib/cloudinary";
 
 interface Photo {
   id: string;
   url: string;
   alt: string;
   caption?: string | null;
+  /** Full-resolution URL for the download action (archive variant). */
+  downloadUrl?: string;
 }
 
 interface PhotoLightboxProps {
@@ -14,10 +17,12 @@ interface PhotoLightboxProps {
   currentIndex: number;
   onClose: () => void;
   onNavigate: (index: number) => void;
-  /** "dark" = the original neutral dark chrome (wedding, default);
+  /** "dark" = the original neutral dark chrome (default);
    *  "archive" = the Homestead room: paper surface, ink chrome, olive
    *  structure buttons, copper counter, italic caption. */
   variant?: "dark" | "archive";
+  /** Show a download pill (archive variant only). */
+  allowDownload?: boolean;
 }
 
 const PhotoLightbox = ({
@@ -26,6 +31,7 @@ const PhotoLightbox = ({
   onClose,
   onNavigate,
   variant = "dark",
+  allowDownload = false,
 }: PhotoLightboxProps) => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -56,6 +62,18 @@ const PhotoLightbox = ({
       <button onClick={onClose} className={closeClasses} aria-label="Close lightbox">
         <X size={isArchive ? 24 : 32} />
       </button>
+
+      {isArchive && allowDownload && currentPhoto.downloadUrl && (
+        <a
+          href={getDownloadUrl(currentPhoto.downloadUrl)}
+          download
+          className="absolute top-4 left-4 z-10 flex items-center gap-2 px-4 py-2 bg-olive text-paper rounded-full hover:bg-olive/90 transition-colors duration-2 ease-paper u-label"
+          aria-label={`Download ${currentPhoto.alt}`}
+        >
+          <Download size={16} />
+          <span className="hidden sm:inline">download</span>
+        </a>
+      )}
 
       {currentIndex > 0 && (
         <button
