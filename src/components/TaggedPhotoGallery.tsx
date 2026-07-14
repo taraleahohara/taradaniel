@@ -292,7 +292,7 @@ const TaggedPhotoGallery = ({
 
   if (!validPhotos || validPhotos.length === 0) {
     return (
-      <section className="py-16 px-6">
+      <section className="py-10 md:py-12 px-6">
         <div className="max-w-7xl mx-auto">
           <h3 className="text-4xl md:text-5xl text-center mb-12 text-brand-alt">
             {title}
@@ -400,7 +400,7 @@ const TaggedPhotoGallery = ({
 
   return (
     <>
-      <section id={id} className="py-16 px-6 scroll-mt-20">
+      <section id={id} className="py-10 md:py-12 px-6 scroll-mt-20">
         <div className="max-w-7xl mx-auto">
           {eyebrow && (
             <p className="u-label text-copper text-center mb-3">{eyebrow}</p>
@@ -409,7 +409,7 @@ const TaggedPhotoGallery = ({
             {displayTitle}
           </h3>
           {description && (
-            <div className="max-w-3xl mx-auto mb-12">
+            <div className="max-w-3xl mx-auto mb-10">
               <p className="text-lg md:text-xl leading-relaxed text-ink text-center">
                 {description}
               </p>

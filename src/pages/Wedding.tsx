@@ -228,7 +228,7 @@ const Wedding = () => {
         const restOfMessage = lines.slice(1).join('\n');
 
         return (
-          <section className="relative py-24 px-6 bg-paper">
+          <section className="relative py-12 md:py-16 px-6 bg-paper">
             <div className="max-w-3xl mx-auto text-center">
               <h1 className="text-4xl md:text-5xl mb-6 text-brand">
                 {dearLine}
