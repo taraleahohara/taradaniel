@@ -10,9 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { getChapter } from "@/data/chapters";
 import { honeymoonPhotos } from "@/data/honeymoonPhotos";
-import PlateHero from "@/components/pilot/PlateHero";
-import PilotControls from "@/components/pilot/PilotControls";
-import { usePilotOptions } from "@/components/pilot/pilotOptions";
+import PlateHero from "@/components/PlateHero";
 
 const chapter = getChapter("honeymoon")!;
 const auth = chapter.auth! as Extract<NonNullable<typeof chapter.auth>, { mode: "password" }>;
@@ -23,8 +21,6 @@ const Honeymoon = () => {
   const [passwordInput, setPasswordInput] = useState("");
   const [error, setError] = useState("");
   const [searchParams] = useSearchParams();
-  // Homestead pilot: live-switchable design options (hero / gallery / gesture)
-  const [pilot, updatePilot] = usePilotOptions();
 
   // Magic Links - Check for access parameter in URL on mount
   useEffect(() => {
@@ -127,7 +123,8 @@ const Honeymoon = () => {
     <div data-chapter={chapter.theme} className="min-h-screen bg-paper flex flex-col">
       <SiteHeader />
 
-      {/* Locked by Tara: wash hero + scatter galleries */}
+      {/* The Homestead language, locked in the Phase 3.5 pilot:
+          wash hero · weave scatter · round corners · no gesture divider */}
       <PlateHero
         mode="wash"
         eyebrow="chapter 02 · august 2025"
@@ -148,7 +145,7 @@ const Honeymoon = () => {
             eyebrow={`0${index + 1}`}
             frame="hairline"
             layout="scatter"
-            scatterScale={pilot.scale}
+            scatterScale="weave"
             emphasizeTitle
             id={section.id}
             description={section.description}
@@ -160,8 +157,6 @@ const Honeymoon = () => {
       </div>
 
       <SiteFooter />
-
-      <PilotControls options={pilot} onChange={updatePilot} />
     </div>
   );
 };

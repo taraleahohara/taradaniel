@@ -482,6 +482,7 @@ const TaggedPhotoGallery = ({
           currentIndex={selectedPhotoIndex}
           onClose={() => setSelectedPhotoIndex(null)}
           onNavigate={setSelectedPhotoIndex}
+          variant={isArchive ? "archive" : "dark"}
         />
       )}
     </>

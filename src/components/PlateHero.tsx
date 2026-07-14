@@ -9,9 +9,10 @@ interface PlateHeroProps {
   imageUrl: string;
 }
 
-/** Homestead pilot hero: big lowercase title on a colour plate first, the
+/** Homestead chapter hero: big lowercase title on a colour plate first, the
  *  photograph below it (the Kelsey "title, then image" pattern), joined by
- *  a curved edge — the page's one licensed gesture. */
+ *  a curved edge — the page's one licensed gesture. Locked in the Phase 3.5
+ *  pilot (Tara chose wash mode; band kept for chapters that want it). */
 const PlateHero = ({ mode, eyebrow, title, subtitle, imageUrl }: PlateHeroProps) => {
   const isBand = mode === "band";
   const plate = isBand ? "bg-brand" : "bg-wash";
