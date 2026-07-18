@@ -120,9 +120,12 @@ const Pets = () => {
           <h1 className="font-display lowercase text-6xl md:text-8xl text-ink leading-none">
             pets
           </h1>
-          <p className="font-hand text-copper-bright text-2xl md:text-[1.7rem] -rotate-3 inline-block ml-16 md:ml-32 mt-1">
-            <AnnotArrow className="inline-block w-12 h-9 align-middle -mr-1.5" />
+          {/* "our creatures" labels the drawn stickers: on desktop it sits
+              below-left of them with the arrow sweeping up toward them; on
+              mobile (stickers hidden) it stays under the title as a flourish. */}
+          <p className="font-hand text-copper-bright text-2xl md:text-[1.7rem] inline-block -rotate-3 ml-16 mt-1 md:ml-0 md:mt-0 md:rotate-1 md:absolute md:top-20 md:right-56">
             our creatures
+            <AnnotArrow className="inline-block w-12 h-9 align-middle ml-0.5" />
           </p>
           <p className="font-body text-lg text-ink/75 max-w-xl mt-4 leading-relaxed">
             The two of them run this house; we just open the treat drawer.
