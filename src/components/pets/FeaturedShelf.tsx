@@ -212,13 +212,12 @@ const FeaturedShelf = ({ photos }: FeaturedShelfProps) => {
       <TornEdge />
       <div className="bg-wash">
         <div className="max-w-5xl mx-auto px-6 pt-1 pb-12">
-          <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-            <span className="u-label text-brand">on display — six from the collection</span>
-            <span className="font-hand text-copper-bright text-lg md:text-xl -rotate-2 inline-block">
-              <AnnotArrow className="inline-block w-9 h-7 align-middle -mr-1" />
-              different every visit
-            </span>
-          </div>
+          {/* The handwritten label is the whole heading now, so the arrow
+              flips to point down at the shelf instead of up at a title. */}
+          <span className="font-hand text-copper-bright text-2xl md:text-[1.7rem] -rotate-2 inline-block pt-1">
+            on display
+            <AnnotArrow className="inline-block w-10 h-8 align-middle -ml-0.5 -scale-y-100 translate-y-3" />
+          </span>
 
           {shelves.map((shelf, shelfIndex) => (
             <div key={shelfIndex} className={shelfIndex > 0 ? "mt-12" : undefined}>

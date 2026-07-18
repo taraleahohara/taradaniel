@@ -17,10 +17,9 @@ const CREATURES: Creature[] = [
   {
     kind: "the dog",
     name: "Phoebe",
-    provenance: "tara's creature first · est. 2017",
+    provenance: "forever and always a potato · est. 2017",
     facts: [
       "more cat than dog, more human than pet",
-      "lover of socks and underwear",
       "neurotic, emotional, velcro",
       "loves: digging holes in the sand, eating kleenex, morning belly rubs",
     ],
@@ -32,7 +31,7 @@ const CREATURES: Creature[] = [
   {
     kind: "the cat",
     name: "Penny",
-    provenance: "dan's creature first",
+    provenance: "from hoarder to lavish · est. 2021",
     facts: [
       "highly opinionated",
       "surveyor of the surrounding outdoors",
@@ -127,8 +126,8 @@ const Pets = () => {
           </p>
           <p className="font-body text-lg text-ink/75 max-w-xl mt-4 leading-relaxed">
             The two of them run this house; we just open the treat drawer.
-            Everything they do ends up here — the collection is permanent,
-            always growing, and never curated down.
+            This is their album, and it grows every time they do something
+            worth keeping.
           </p>
 
           {/* Sticker cutouts from the family portrait, leaning on the header */}

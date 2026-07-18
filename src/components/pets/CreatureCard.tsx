@@ -45,7 +45,13 @@ const CreatureCard = ({ creature }: { creature: Creature }) => (
           {creature.name}
         </p>
         <p className="u-label text-ink/60 mt-1.5 tracking-[0.18em] text-[0.64rem]">
-          {creature.provenance}
+          {/* Wrap only at the "·" separators, never inside a phrase. */}
+          {creature.provenance.split("·").map((part, i) => (
+            <span key={i}>
+              {i > 0 && " · "}
+              <span className="whitespace-nowrap">{part.trim()}</span>
+            </span>
+          ))}
         </p>
       </div>
     </div>
